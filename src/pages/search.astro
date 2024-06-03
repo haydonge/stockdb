@@ -4,6 +4,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import StockTable from "../components/ui/stockTable.astro";
 import { Stockonhand } from "astro:db";
 import { db } from "astro:db";
+import UpdateDiaglog from "../components/ui/UpdateDiaglog.astro";
 
 import Button from "@/components/ui/Button.astro";
 type Stockt = {
@@ -63,22 +64,20 @@ const filteredStocks =  defaultStocks;
             <th class="py-2">Qty</th>
             <th class="py-2">SafeQty</th>
             <th class="py-2">URL</th>
-            <th class="py-2">Action</th>
+            <th class="py-2">Action</th>  
+           
             
         </thead>
         <tbody id="searchResults" />
       
+      
       </table>
-
   <div id="stockTableContainer">
   <!-- <StockTable stocks={filteredStocks}/> -->
 </div>
 
 </section>
-  <!-- <divclass="grid gap-6 grid-cols-[repeat(auto-fit,_minmax(280px,_1fr))] items-start"  >
-    {filteredStocks.map((item:any) => <StockCard stock={item} />)}
-  </div> -->
-
+<UpdateDiaglog stock={null} />
   
 <script>
   //selector
@@ -114,7 +113,7 @@ const filteredStocks =  defaultStocks;
 
     function    updateDocumentTitle(search) {
       document.title = search
-      ?`Search Result for "${search}"`:"Searchthe database";
+      ?`Search Result for "${search}"`:"Search the database";
     }
 
 
@@ -127,10 +126,10 @@ const filteredStocks =  defaultStocks;
 
 
        function generateSearchList(result){
-    return result.map((r) => {
-        const { id, partnumber, description, qty, url, safeqty  } = r;
+        return result.map((r) => {
+            const { id, partnumber, description, qty, url, safeqty  } = r;
 
-        return `
+           return `
             <tr  class="text-center">
                 <td class="py-2">${id}</td>
                 <td class="py-2">${partnumber}</td>
@@ -148,15 +147,41 @@ const filteredStocks =  defaultStocks;
                   data-safeqty=${safeqty}
                   classes="absolute -right-1 -bottom-1 border-4 border-theme-base hover:scale-105 active:scale-95 ring-offset-2"
                   aria-label={"Update Link: ${partnumber}"}
-                  class="text-red-500 hover:text-red-700"
-                }> update </button>
+                  class="text-red-500 hover:text-red-700"             
+                }> Update </button>
+              
                 </td>
             </tr>
         `;
     }).join(" ");
 }
 
-      
+function attachUpdateEventListeners() {
+      const updateBtns = document.querySelectorAll("[data-update]");
+      updateBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+          const stocks = {
+            id: btn.getAttribute("data-id"),
+            partnumber: btn.getAttribute("data-partnumber"),
+            description: btn.getAttribute("data-description"),
+            qty: btn.getAttribute("data-qty"),
+            url: btn.getAttribute("data-url"),
+            safeqty: btn.getAttribute("data-safeqty")
+          };
+          const dialog2 = document.getElementById("dialog2");
+          if (dialog2) {
+            const formupdate :any = dialog2.querySelector("form");
+            formupdate.querySelector("[name='id']").value = stocks.id;
+            formupdate.querySelector("[name='partnumber']").value = stocks.partnumber;
+            formupdate.querySelector("[name='description']").value = stocks.description;
+            formupdate.querySelector("[name='qty']").value = stocks.qty;
+            formupdate.querySelector("[name='url']").value = stocks.url;
+            formupdate.querySelector("[name='safeqty']").value = stocks.safeqty;
+            dialog2.showModal();
+          }
+        });
+      });
+    }
       
 
     async function fetchSearchResults(search_word:string) {
@@ -173,6 +198,7 @@ const filteredStocks =  defaultStocks;
             // updateStockTable(SEARCH_DATA);
             console.log(results);
             searchResult.innerHTML = results.length >0 ? generateSearchList(results): "Not Found Data"
+            attachUpdateEventListeners();
 					} catch (e) {
 						console.error(e);
 					}		
@@ -244,4 +270,5 @@ const filteredStocks =  defaultStocks;
 
 
 </script>
+
 </BaseLayout>
