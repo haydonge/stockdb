@@ -1,0 +1,46 @@
+---
+
+import StockCard from "../components/ui/StockCard.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import StockTable from "../components/ui/stockTable.astro";
+import { Stockonhand } from "astro:db";
+import { db } from "astro:db";
+
+type Stockt = {
+  id: number;
+  partnumber: string;
+  description: string;
+  qty: number;
+  url: string;
+  safeqty: number;
+};
+
+interface Props {
+  stock: Stockt | null;
+}
+
+const { stock } = Astro.props as Props;
+
+
+// 从数据库获取默认数据
+const defaultStocks = await db.select().from(Stockonhand);
+
+// 从 props 中获取 stocks 数据，如果没有传入，则使用默认数据
+// const { stocks: externalStocks } = Astro.props;
+
+const Stocks =  defaultStocks;
+// console.log(Stocks);
+---
+
+<BaseLayout>
+  <div
+    class="grid gap-6 grid-cols-[repeat(auto-fit,_minmax(280px,_1fr))] items-start"
+  >
+    {Stocks.map((item:any) => <StockCard stock={item} />)}
+  </div>
+
+  <br>
+  
+  <StockTable stocks={Stocks}/>
+  
+</BaseLayout>

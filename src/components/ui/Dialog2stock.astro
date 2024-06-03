@@ -1,0 +1,112 @@
+---
+import Button from "./Button.astro";
+// import Checkbox from "./Checkbox.astro";
+import TextArea from "./TextArea.astro";
+import TextInput from "./TextInput.astro";
+import NumberInput from "./NumberInput.astro";
+
+---
+
+<dialog id="dialog1" style="background-color: rgb(60, 61, 63);width :30%;">
+  <div class="p-4 sm:p-8 grid gap-6">
+    <form class="grid gap-4" id="add-form">
+      <h2 class="text-xl text-theme-accent font-bold leading-tight">
+        增加库存
+      </h2>
+      <TextInput name="Part Number" inputId={Math.random()} />
+      <TextArea name="Link Description" id={Math.random()} />
+      <NumberInput name="Qty input" inputId={Math.random()} />
+            <TextInput
+        name="Link URL"
+        inputId={Math.random()}
+        title="Must start with https://"
+        pattern="https?://.*"
+      />
+      <NumberInput name="SafeQTY input" inputId={Math.random()} />
+      
+      <!-- <Checkbox checked={false} inputId={Math.random()} name="isRead" /> -->
+      <div class="flex gap-4 flex-wrap">
+        <Button intent="primary" id="close-dialog1" type="button">Close</Button>
+        <Button intent="accent" type="submit">Add Link</Button>
+      </div>
+    </form>
+  </div>
+</dialog>
+
+<script>
+  // 获取表单元素和按钮元素
+  const addForm1 = document.querySelector("#add-form") as HTMLFormElement;
+  const openDialogBtn1 = document.getElementById("open-dialog" ) as HTMLButtonElement;
+  const closeDialogBtn1 = document.getElementById("close-dialog1") as HTMLButtonElement;
+  const dialog1 = document.getElementById("dialog1") as HTMLDialogElement;
+
+  // 点击打开对话框按钮时显示对话框
+  openDialogBtn1.addEventListener("click", () => dialog1.showModal());
+// 点击关闭对话框按钮时关闭对话框
+  closeDialogBtn1.addEventListener("click", () => dialog1.close());
+// 点击对话框外部时关闭对话框
+  dialog1.addEventListener("click", (e) => {
+    if (e.target === e.currentTarget) {
+      dialog1.close();
+    }
+  });
+
+  // form inputs 
+  //sanitize-html 是一个 JavaScript 模块，用于在用户提供的 HTML 中移除或转义潜在的不安全内容，
+  //以防止跨站脚本攻击（XSS）和其他安全漏洞。它的主要功能是对 HTML 进行清理和过滤，确保其中的内容
+  //符合安全标准。
+  import sanitizeHtml from "sanitize-html";
+  // 提交表单时的事件监听器
+  addForm1.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    try {
+      // 获取表单数据
+      const formData = new FormData(addForm1);
+      const partnumber = sanitizeHtml(formData.get("part-number") as string);
+      const description = sanitizeHtml(formData.get("link-description") as string );
+      const qty = sanitizeHtml (formData.get("qty-input") as string);
+      const url = sanitizeHtml(formData.get("link-url") as string);
+      const safeqty = sanitizeHtml (formData.get("safeqty-input") as string);
+   
+         
+      
+      // 检查表单数据类型并发送请求
+      if (
+        typeof partnumber === "string" &&
+        typeof description === "string" &&
+        typeof url === "string" && 
+        typeof qty == "string" && 
+        typeof safeqty == "string"
+      ) {
+        const req = await fetch("/api/addstock.json", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            partnumber,
+            description,
+            qty,
+            url,
+            safeqty,            
+          }),
+        });
+       // 处理请求的响应
+        const { success, data, message } = await req.json();
+       // 如果请求成功，则重置表单并关闭对话框，刷新页面
+        if (success) {
+          addForm1.reset();
+          dialog1.close();
+          location.reload();
+        } else {
+          throw new Error(message);
+        }
+      }
+    } catch (e) {       // 捕获异常并弹出警告
+      if (e instanceof Error) {
+        alert(e.message);
+      }
+      console.error(e);
+    }
+  });
+</script>

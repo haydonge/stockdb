@@ -1,0 +1,48 @@
+---
+// import Button from "./Button.astro";
+const { columns, data, onDelete, onEdit  } = Astro.props;
+
+/**
+ * columns: Array of objects describing the columns (e.g., [{ label: 'Name', key: 'name' }, ...])
+ * data: Array of objects representing the rows of the table
+ */
+
+/**
+ * @type {Column[]}
+ */
+ const typedColumns = columns;
+
+/**
+ * @type {Row[]}
+ */
+const typedData = data;
+
+---
+
+<table class="min-w-full divide-y divide-gray-200">
+  <thead class="bg-gray-50">
+    <tr>
+      {columns.map(column => (
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          {column.label}
+        </th>
+      ))}
+      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+    </tr>
+  </thead>
+  <tbody class="bg-white divide-y divide-gray-200">
+    {data.map(row => (
+      <tr class="hover:bg-gray-100">
+        {columns.map(column => (
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+            {String(row[column.key])}
+          </td>
+        ))}
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+          <button class="text-red-500" data-delete data-id={row.id}>Delete</button>
+          {/* <button class="text-blue-500 ml-2" onClick={() => onEdit(row)}>Edit</button> */}
+        </td>
+      </tr>
+    ))}
+  </tbody>
+</table>

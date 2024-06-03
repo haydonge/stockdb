@@ -1,0 +1,117 @@
+---
+import { Icon } from "astro-icon/components";
+type Stock = {
+  id: number;
+  partnumber: string;
+  description: string;
+  qty: number;
+  url: string;
+  safeqty: number;
+};
+type Props = {
+  stocks: Stock[];
+};
+const { stocks } = Astro.props;
+
+---
+
+<table class="min-w-full ">
+  <thead>
+    <tr>
+      <th class="py-2">Part Number</th>
+      <th class="py-2">Description</th>
+      <th class="py-2">Onhand Qty</th>
+      <th class="py-2">Safe Qty</th>
+      <th class="py-2">URL</th>
+      <th class="py-2">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {stocks.map((stock) => (
+      <tr key={stock.id} class="border-t">
+        <th class="py-2">{stock.partnumber}</th>
+        <th class="py-2">{stock.description}</th>
+        <th class="py-2">{stock.qty}</th>
+        <th class="py-2">{stock.safeqty}</th>
+        <th class="py-2">
+          <a href={stock.url} class="text-blue-500 hover:underline mr-4">
+            Open Link
+          </a> 
+          </th>
+          <th>
+          <button
+            class="text-red-500 hover:text-red-700"
+            open-dialog
+            data-id={stock.id}
+            aria-label={`Update Link: ${stock.partnumber}`}
+          >
+          
+            <Icon name="check" size={24} /> 
+          
+          </button>
+
+          <button
+            class="text-red-500 hover:text-red-700"
+            data-delete
+            data-id={stock.id}
+            aria-label={`Delete Link: ${stock.partnumber}`}
+          >
+            <Icon name="trash" size={24} />
+          </button>
+        </th>
+      </tr>
+    ))}
+  </tbody>
+</table>
+<!-- <UpdateDiaglog stock={null} /> -->
+<script>
+  // delete link
+  const deleteBtns = document.querySelectorAll(
+    "[data-delete]"
+  ) as NodeListOf<HTMLButtonElement>;
+  
+  deleteBtns.forEach((btn) => {
+    btn.addEventListener("click", async (e) => {
+      const id = btn.getAttribute("data-id");
+      try {
+        await fetch(`/api/${id}.json`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        console.log("deleted");
+        btn.closest("tr")?.remove();
+      } catch (error) {
+        console.error(error);
+      }
+    });
+  });
+
+
+   const updateBtns = document.querySelectorAll(
+    "[data-update]"
+  ) as NodeListOf<HTMLButtonElement>;
+  
+    updateBtns.forEach((btn) => {
+      btn.addEventListener("click", async (e) => {
+      const id = btn.getAttribute("data-id");
+      console.log(id);
+      // try {
+      //   await fetch(`/api/${id}.json`, {
+      //     method: "PATCH",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //   });
+      //   console.log("deleted");
+      //   // btn.closest("tr")?.remove();
+      // } catch (error) {
+      //   console.error(error);
+      // }
+
+      
+    });
+    });
+
+</script>

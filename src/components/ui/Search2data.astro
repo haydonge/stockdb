@@ -1,0 +1,139 @@
+---
+import Datas from "@/pages/datas.astro";
+import Button from "./Button.astro";
+import TextInput from "./TextInput.astro";
+
+
+---
+
+<dialog id="dialog3"   style="background-color: rgb(60, 61, 63);width :30%;">
+  <div class="p-4 sm:p-8 grid gap-6">
+    <form class="grid gap-4" id="search-form">
+      <h2 class="text-xl text-theme-accent font-bold leading-tight">
+        搜索库存
+      </h2>
+      <TextInput name="Part Numbers" inputId={Math.random()} />
+      <TextInput name="Link Descriptions" inputId={Math.random()} />
+      <div class="flex gap-4 flex-wrap">
+        <Button intent="primary" id="close-dialog3" type="button">Close</Button>
+        <Button intent="accent" type="submit">Search</Button>
+      </div>
+    </form>
+  </div>
+
+  <!-- <main >
+    <aside class="form" >
+      <div>
+        <label for="search">Search the Blog</label>
+        <span>Enter a search term or phrase to search the blog.</span>
+      </div>
+      <input 
+        type="search"
+        required
+        min="2"
+        max="24"
+        name="search"
+        id="search"
+        placeholder="Enter a search term…"
+      />
+    </div>
+    <p id="searchReadout"></p>
+    <section aria-label="Search Results">
+      <ul id="searchResults"></ul>
+    </section>
+  </main> -->
+</dialog>
+
+<script>
+
+  // 获取表单元素和按钮元素
+  const searchform = document.querySelector("#search-form") as HTMLFormElement;
+  const openDialogBtn3 = document.getElementById("search-dialog" ) as HTMLButtonElement;
+  const closeDialogBtn3 = document.getElementById("close-dialog3") as HTMLButtonElement;
+  const dialog3 = document.getElementById("dialog3") as HTMLDialogElement;
+
+  // 点击打开对话框按钮时显示对话框
+  openDialogBtn3.addEventListener("click", () => dialog3.showModal());
+// 点击关闭对话框按钮时关闭对话框
+  closeDialogBtn3.addEventListener("click", () => dialog3.close());
+// 点击对话框外部时关闭对话框
+  dialog3.addEventListener("click", (e) => {
+    if (e.target === e.currentTarget) {
+      dialog3.close();
+    }
+  });
+
+
+
+  // import DOMPurify from "dompurify";
+  // const form = document.querySelector("form");
+  // form?.addEventListener("submit", (e) => {
+  //   e.preventDefault();
+  //   const formData = new FormData(form);
+  //   const searchTerm = DOMPurify.sanitize(formData.get("search")?.toString());
+  //   if (!searchTerm || searchTerm.length === 0) return;
+  //   const url = new URL("/search", window.location.origin);
+  //   url.searchParams.set("q", searchTerm);
+  //   window.location.assign(url.toString());
+  // });
+
+
+
+
+
+  // form inputs 
+  //sanitize-html 是一个 JavaScript 模块，用于在用户提供的 HTML 中移除或转义潜在的不安全内容，
+  //以防止跨站脚本攻击（XSS）和其他安全漏洞。它的主要功能是对 HTML 进行清理和过滤，确保其中的内容
+  //符合安全标准。
+  // import DOMpurity from "dompurify";
+  import sanitizeHtml from "sanitize-html";
+  // 提交表单时的事件监听器
+  searchform.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    try {
+      // 获取表单数据
+      const formData = new FormData(searchform);
+      const partnumber = sanitizeHtml(formData.get("part-numbers") as string);
+         
+      // 检查表单数据类型并发送请求
+      if (
+        typeof partnumber === "string" 
+      ) {
+      //   const req = await fetch("/api/searchdata.json", {
+      //     method: "SEARCH",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify({
+      //       partnumber,
+                
+      //     }),
+      //   });
+      //  // 处理请求的响应
+      //   const { success, data, message } = await req.json();
+        
+      //  // 如果请求成功，则重置表单并关闭对话框，刷新页面
+      //   if (success) {
+      //     searchform.reset();
+      //     dialog3.close();
+      //     location.reload();
+      //     console.log(data)    
+      //   } else {
+      //     throw new Error(message);
+      //   }
+       const url = new URL("/search", window.location.origin);
+       url.searchParams.set("q", partnumber);
+       window.location.assign(url.toString());
+
+
+
+      }
+    } catch (e) {       // 捕获异常并弹出警告
+      if (e instanceof Error) {
+        alert(e.message);
+        dialog3.close();
+      }
+      console.error(e);
+    }
+  });
+</script>

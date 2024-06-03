@@ -1,0 +1,114 @@
+---
+import Stock from "../ui/stock.astro";
+import Button from "../ui/Button.astro";
+import { Icon } from "astro-icon/components";
+import UpdateDiaglog from "./UpdateDiaglog.astro";
+
+
+type Props = {
+  stock: {
+    id: number;
+    partnumber: string;
+    description: string;
+    qty: number;
+    url: string;
+    safeqty: number;
+  };
+};
+
+const { stock } = Astro.props;
+---
+
+<article
+  class="p-4 sm:p-6 bg-theme-base text-theme-text shadow-black/60 shadow-xl rounded-md grid gap-6 relative"
+>
+  <div class="grid gap-2">
+    <h2 class="leading-tight font-bold text-theme-accent text-xl text-balance">
+      {stock.partnumber}
+    </h2>
+    <p>{stock.description}</p>
+    <p>Onhand Qty : {stock.qty} Safe Qty : {stock.safeqty}</p>
+  </div>
+  <Stock href={stock.url} intent="primary">Open Link</Stock>
+  <Button
+    intent="accent"
+    size="square"
+    data-delete
+    data-id={stock.id}
+    classes="absolute -top-2 -right-2 rounded-full border-4 border-theme-base hover:scale-105 active:scale-95 ring-offset-2"
+    aria-label={`Delete Link: ${stock.partnumber}`}
+  >
+    <Icon name="trash" size={24} />
+  </Button>
+  <Button
+    intent="accent"
+    size="square"
+    data-update
+    data-id={stock.id}
+    data-partnumber={stock.partnumber}
+    data-description={stock.description}
+    data-qty={stock.qty}
+    data-url={stock.url}
+    data-safeqty={stock.safeqty}
+    classes="absolute -right-1 -bottom-1 border-4 border-theme-base hover:scale-105 active:scale-95 ring-offset-2"
+    aria-label={`Update Link: ${stock.partnumber}`}
+  >
+    <Icon name="check" size={24} />
+  </Button>
+  <UpdateDiaglog stock={null}/>
+</article>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // 删除操作
+    const deleteBtns = document.querySelectorAll("[data-delete]");
+    deleteBtns.forEach((btn:any) => {
+      btn.addEventListener("click", async (e) => {
+        const id = btn.getAttribute("data-id");
+        try {
+          await fetch(`/api/${id}.json`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          btn.closest("article").remove();
+          console.log("deleted");
+        } catch (error) {
+          console.error(error);
+        }
+      });
+    });
+
+    // 更新操作
+    const updateBtns = document.querySelectorAll("[data-update]");
+    const dialog2 = document.getElementById("dialog2");
+
+    updateBtns.forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        const stock = {
+          id: btn.getAttribute("data-id"),
+          partnumber: btn.getAttribute("data-partnumber"),
+          description: btn.getAttribute("data-description"),
+          qty: btn.getAttribute("data-qty"),
+          url: btn.getAttribute("data-url"),
+          safeqty: btn.getAttribute("data-safeqty"),
+        };
+
+        if (dialog2) {
+          // 动态更新对话框内容
+          const form:any = dialog2.querySelector("form");
+          form.querySelector("[name='id']").value = stock.id;
+          form.querySelector("[name='partnumber']").value = stock.partnumber;
+          form.querySelector("[name='description']").value = stock.description;
+          form.querySelector("[name='qty']").value = stock.qty;
+          form.querySelector("[name='url']").value = stock.url;
+          form.querySelector("[name='safeqty']").value = stock.safeqty;
+
+          // 显示对话框
+          dialog2.showModal();
+        }
+      });
+    });
+  });
+</script>
