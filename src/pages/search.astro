@@ -81,9 +81,9 @@ const filteredStocks =  defaultStocks;
   
 <script>
   //selector
-  const search = document.querySelector("#search");
+  const search = document.querySelector("#search") as HTMLInputElement;
   const searchsubmit =document.querySelector("#form1") as HTMLFormElement;
-  const searchResult =document.querySelector("#searchResults")
+  const searchResult =document.querySelector("#searchResults")!; //非空声明
 
   const SPINNER = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#d70f0f" viewBox="0 0 256 256" id="spinner"><path d="M236,128a108,108,0,0,1-216,0c0-42.52,24.73-81.34,63-98.9A12,12,0,1,1,93,50.91C63.24,64.57,44,94.83,44,128a84,84,0,0,0,168,0c0-33.17-19.24-63.43-49-77.09A12,12,0,1,1,173,29.1C211.27,46.66,236,85.48,236,128Z"></path><style>
 				#spinner {
@@ -111,22 +111,22 @@ const filteredStocks =  defaultStocks;
       import DOMPurify from "dompurify"
   
 
-    function    updateDocumentTitle(search) {
+    function updateDocumentTitle(search:string) {
       document.title = search
       ?`Search Result for "${search}"`:"Search the database";
     }
 
 
 
-     function updateSearchPageURL(search) {
+     function updateSearchPageURL(search:string) {
 				const url = new URL(window.location.href);
 				url.searchParams.set("q", search);
 				window.history.replaceState(null, "", url);
        }
 
 
-       function generateSearchList(result){
-        return result.map((r) => {
+       function generateSearchList(result:Stockt[]):string {
+        return result.map((r:Stockt) => {
             const { id, partnumber, description, qty, url, safeqty  } = r;
 
            return `
@@ -168,7 +168,7 @@ function attachUpdateEventListeners() {
             url: btn.getAttribute("data-url"),
             safeqty: btn.getAttribute("data-safeqty")
           };
-          const dialog2 = document.getElementById("dialog2");
+          const dialog2 = document.getElementById("dialog2") as HTMLDialogElement;
           if (dialog2) {
             const formupdate :any = dialog2.querySelector("form");
             formupdate.querySelector("[name='id']").value = stocks.id;
@@ -196,9 +196,8 @@ function attachUpdateEventListeners() {
             const { success, data, message } = await res.json();
 						const results = data;
             // updateStockTable(SEARCH_DATA);
-            console.log(results);
             searchResult.innerHTML = results.length >0 ? generateSearchList(results): "Not Found Data"
-            attachUpdateEventListeners();
+            attachUpdateEventListeners(); //重点
 					} catch (e) {
 						console.error(e);
 					}		
@@ -213,40 +212,6 @@ function attachUpdateEventListeners() {
         updateDocumentTitle(urlParams);
         search.value =urlParams;
         search.focus();
-
-        // //selector
-        // const updateBtns = document.querySelectorAll("data-update");
-        // const dialog2 = document.getElementById("dialog2");
-        
-        // updateBtns.forEach((btn) => {
-        //   btn.addEventListener("click", (e) => {
-        //   const stock = {
-        //     id: btn.getAttribute("data-id"),
-        //     partnumber: btn.getAttribute("data-partnumber"),
-        //     description: btn.getAttribute("data-description"),
-        //     qty: btn.getAttribute("data-qty"),
-        //     url: btn.getAttribute("data-url"),
-        //     safeqty: btn.getAttribute("data-safeqty"),
-        // };
-
-        // if (dialog2) {
-        //   // 动态更新对话框内容
-        //   const form = dialog2.querySelector("form");
-        //   form.querySelector("[name='id']").value = stock.id;
-        //   form.querySelector("[name='partnumber']").value = stock.partnumber;
-        //   form.querySelector("[name='description']").value = stock.description;
-        //   form.querySelector("[name='qty']").value = stock.qty;
-        //   form.querySelector("[name='url']").value = stock.url;
-        //   form.querySelector("[name='safeqty']").value = stock.safeqty;
-
-        //   // 显示对话框
-        //   dialog2.showModal();
-        // }
-    //   // });
-    // });
-
-
-
        });
      
 

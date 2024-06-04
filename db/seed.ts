@@ -73,7 +73,34 @@ await db.insert(Stockonhand).values([
     url: "https://sina.com.cn",
     safeqty:5,
   },
-  
+  {
+    partnumber: "LFNK1000003",
+    description: "This is my blog about web development and design.",  
+    qty:20,
+    url: "https://chrispennington.blog",
+    safeqty:5,
+  },
+  {
+    partnumber: "LFNK1000004",
+    description: "This is my blog about web development and design.",  
+    qty:20,
+    url: "https://sina.com.cn",
+    safeqty:5,
+  },
+  {
+    partnumber: "LFNK1000005",
+    description: "This is my blog about web development and design.",  
+    qty:20,
+    url: "https://chrispennington.blog",
+    safeqty:5,
+  },
+  {
+    partnumber: "LFNK1000006",
+    description: "This is my blog about web development and design.",  
+    qty:20,
+    url: "https://sina.com.cn",
+    safeqty:5,
+  },
 ]);
 
 };

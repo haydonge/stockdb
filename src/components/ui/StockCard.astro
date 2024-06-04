@@ -30,7 +30,7 @@ const { stock } = Astro.props;
     <p>Onhand Qty : {stock.qty} Safe Qty : {stock.safeqty}</p>
   </div>
   <Stock href={stock.url} intent="primary">Open Link</Stock>
-  <Button
+  <!-- <Button
     intent="accent"
     size="square"
     data-delete
@@ -39,7 +39,7 @@ const { stock } = Astro.props;
     aria-label={`Delete Link: ${stock.partnumber}`}
   >
     <Icon name="trash" size={24} />
-  </Button>
+  </Button> -->
   <Button
     intent="accent"
     size="square"
@@ -63,7 +63,7 @@ const { stock } = Astro.props;
     // 删除操作
     const deleteBtns = document.querySelectorAll("[data-delete]");
     deleteBtns.forEach((btn:any) => {
-      btn.addEventListener("click", async (e) => {
+      btn.addEventListener("click", async (e:any) => {
         const id = btn.getAttribute("data-id");
         try {
           await fetch(`/api/${id}.json`, {
@@ -82,7 +82,7 @@ const { stock } = Astro.props;
 
     // 更新操作
     const updateBtns = document.querySelectorAll("[data-update]");
-    const dialog2 = document.getElementById("dialog2");
+    const dialog2 = document.getElementById("dialog2") as HTMLDialogElement;
 
     updateBtns.forEach((btn) => {
       btn.addEventListener("click", (e) => {

@@ -68,7 +68,7 @@ import NumberInput from "./NumberInput.astro";
       const url = sanitizeHtml(formData.get("link-url") as string);
       const safeqty = sanitizeHtml (formData.get("safeqty-input") as string);
    
-         
+        
       
       // 检查表单数据类型并发送请求
       if (
@@ -78,30 +78,67 @@ import NumberInput from "./NumberInput.astro";
         typeof qty == "string" && 
         typeof safeqty == "string"
       ) {
-        const req = await fetch("/api/addstock.json", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            partnumber,
-            description,
-            qty,
-            url,
-            safeqty,            
-          }),
-        });
-       // 处理请求的响应
-        const { success, data, message } = await req.json();
-       // 如果请求成功，则重置表单并关闭对话框，刷新页面
-        if (success) {
-          addForm1.reset();
-          dialog1.close();
-          location.reload();
-        } else {
-          throw new Error(message);
-        }
-      }
+            const req = await fetch("/api/addstock.json", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                partnumber,
+                description,
+                qty,
+                url,
+                safeqty,            
+              }),
+            });
+          // 处理请求的响应
+
+            const { success, requiresConfirmation, message,currentQty } = await req.json();
+
+            if (req.status===409 && requiresConfirmation){
+                  const userConfirmed = window.confirm(message); 
+                  console.log(userConfirmed);
+                  console.log(currentQty);
+                  const confirmResponse = await fetch("/api/addstock.json", {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                      partnumber,
+                      description,
+                      qty,
+                      url,
+                      safeqty,
+                      userConfirmed,
+                    })
+                  });
+                  const confirmResult = await confirmResponse.json();
+                  console.log(confirmResult);
+                  if (confirmResponse.ok) {
+                    alert('库存更新成功');
+                  } else {
+                    alert('更新失败');
+                  }
+                 
+                  addForm1.reset();
+                  dialog1.close();
+                  location.reload();
+               
+
+
+                  }
+            else{
+          // 如果请求成功，则重置表单并关闭对话框，刷新页面
+                if (success) {
+                  addForm1.reset();
+                  dialog1.close();
+                  location.reload();
+                } else {
+                  throw new Error(message);
+                }
+          }
+    }
     } catch (e) {       // 捕获异常并弹出警告
       if (e instanceof Error) {
         alert(e.message);
