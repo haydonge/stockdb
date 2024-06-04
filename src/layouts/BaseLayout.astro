@@ -24,37 +24,80 @@ const { title = "订单管理", description = "Links for web developers." } = As
     <meta name="color-scheme" content="dark" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <style>
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+      }
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 1rem;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      header {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      .button-group {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+      .bg-gradient {
+        background: linear-gradient(to bottom, black, var(--theme-base));
+      }
+      @media (min-width: 640px) {
+        .container {
+          padding: 2rem;
+        }
+        header {
+          flex-direction: row;
+          justify-content: space-between;
+        }
+        .button-group {
+          justify-content: flex-end;
+          gap: 1.5rem;
+        }
+      }
+    </style>
   </head>
 
-  <body class="bg-gradient-to-b from-black to-theme-base text-theme-text text-base relative">
+  <body class="bg-gradient text-theme-text text-base relative">
     <div
       style={`background-image: url(${dotsImage.src}); -webkit-mask-image:-webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)))`}
       class="absolute left-0 h-60 right-0 opacity-40 mix-blend-difference -z-10"
     >
     </div>
-    <div class="grid gap-10 sm:gap-16 min-h-screen grid-rows-auto_1fr_auto relative overflow-hidden">
-      <header class="grid place-items-center py-8">
-        <h1 class="text-theme-accent font-bold text-4xl [text-shadow:_0_10px_15px_black]">
-          库存管理系统
-        </h1>
-        <div class="flex space-x-4">
-          <Button intent="accent" id="open-dialog">增加订单</Button>
-          <Button intent="accent" id="upload-dialog">批量上传</Button>
-          <Button intent="accent" id="search-dialog">搜索数据库</Button>
+    <div class="min-h-screen relative overflow-hidden">
+      <header class="py-8">
+        <div class="container">
+          <h1 class="text-theme-accent font-bold text-4xl [text-shadow:_0_10px_15px_black]">
+            库存管理系统
+          </h1>
+          <div class="button-group">
+            <Button intent="accent" id="open-dialog">增加订单</Button>
+            <Button intent="accent" id="upload-dialog">批量上传</Button>
+            <Button intent="accent" id="search-dialog">搜索数据库</Button>
+          </div>
         </div>
       </header>
-      <main
-        class="container after:absolute after:bg-theme-accent after:w-3/4 after:left-1/2 after:-translate-x-1/2 after:h-96 after:mix-blend-difference after:rounded-full after:-bottom-1/4 after:-z-50 after:blur-3xl after:opacity-40"
-      >
+      <main class="container">
         <slot />
         <br>
         <br>
-      <Footer />
-      <Dialog2Stock />
-      <Uploadexcel />
-      <Search2Data />
+        <Footer />
+        <Dialog2Stock />
+        <Uploadexcel />
+        <Search2Data />
       </main>
-      
     </div>
     <div
       style={`background-image: url(${dotsImage.src}); -webkit-mask-image:-webkit-gradient(linear, left top, left bottom, to(rgba(0,0,0,1)), from(rgba(0,0,0,0)))`}

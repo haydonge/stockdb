@@ -3,7 +3,6 @@ import { db, Stockonhand, eq } from 'astro:db';
 
 export const POST: APIRoute = async ({ request }) => {
     const item = await request.json();
-    console.log("good")
     try {
        
             const { partnumber, description, qty, url, safeqty } = item;

@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";// Astro 框架提供的类型，用于定义 API 路由处理程序的接口。
-import { Stockonhand, db } from "astro:db";
+import { Stockonhand, db, eq} from "astro:db";
 import sanitize from "sanitize-html"; //用于清理和过滤 HTML 内容
 
 
@@ -23,7 +23,30 @@ export const POST: APIRoute = async ({ request }) => {
         }
       );
     }
-  
+    // const existingItems = await db.select().from(Stockonhand).where(eq(Stockonhand.partnumber, partnumber));
+
+    // if (existingItems.length > 0) {
+    //     const existingItem = existingItems[0];
+    //     const userConfirmed = await promptUserConfirmation(`Part number ${partnumber} exists. Do you want to update its quantity?`);
+
+    //     if (userConfirmed) {
+    //         await db.update(Stockonhand).set({ qty: existingItem.qty + quantity }).where(eq(Stockonhand.partnumber, partnumber));
+    //     }
+    // } else {
+    //     await db.insert(Stockonhand).values({
+    //         partnumber,
+    //         description,
+    //         qty: quantity,
+    //         url,
+    //         safeqty: safeQuantity,
+    //     });
+    // }
+
+
+
+
+
+
     const res = await db.insert(Stockonhand).values({
       partnumber: partnumber,
       description: description,
