@@ -29,11 +29,18 @@ export interface Props
   extends HTMLAttributes<"button">,
     VariantProps<typeof button> {
   classes?: string;
+  href?: string;  // Add href to the Props interface
 }
 
-const { intent = "primary", size = "medium", classes, ...rest } = Astro.props;
+const { intent = "primary", size = "medium", classes, href, ...rest } = Astro.props;
 ---
 
-<button class:list={twMerge([button({ intent, size }), classes])} {...rest}>
-  <slot />
-</button>
+{href ? (
+  <a class:list={twMerge([button({ intent, size }), classes])} href={href} {...rest}>
+    <slot />
+  </a>
+) : (
+  <button class:list={twMerge([button({ intent, size }), classes])} {...rest}>
+    <slot />
+  </button>
+)}

@@ -8,7 +8,7 @@ import Uploadexcel from "../components/ui/Uploadgooglesheet.astro";
 import Search2Data from "@/components/ui/Search2data.astro";
 import UpdateDiaglog from "../components/ui/UpdateDiaglog.astro"
 const dotsImage = await getImage({ src: dots, format: "avif" });
-
+import NavBar from "../components/ui/NavBar.astro";
 const { title = "订单管理", description = "Links for web developers." } = Astro.props;
 ---
 
@@ -71,13 +71,16 @@ const { title = "订单管理", description = "Links for web developers." } = As
   </head>
 
   <body class="bg-gradient text-theme-text text-base relative">
+    <NavBar />
     <div
       style={`background-image: url(${dotsImage.src}); -webkit-mask-image:-webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)))`}
       class="absolute left-0 h-60 right-0 opacity-40 mix-blend-difference -z-10"
     >
     </div>
     <div class="min-h-screen relative overflow-hidden">
-      <header class="py-8">
+      <br>
+      
+      <!-- <header class="py-8">
         <div class="container">
           <h1 class="text-theme-accent font-bold text-4xl [text-shadow:_0_10px_15px_black]">
             库存管理系统
@@ -88,11 +91,14 @@ const { title = "订单管理", description = "Links for web developers." } = As
             <Button intent="accent" id="search-dialog">搜索数据库</Button>
           </div>
         </div>
-      </header>
+      </header> -->
       <main class="container">
+        
+
         <slot />
         <br>
         <br>
+        
         <Footer />
         <Dialog2Stock />
         <Uploadexcel />
