@@ -12,8 +12,8 @@ import TextInput from "./TextInput.astro";
       <h2 class="text-xl text-theme-accent font-bold leading-tight">
         搜索库存
       </h2>
-      <TextInput name="Part Numbers" inputId={Math.random()} />
-      <TextInput name="Link Descriptions" inputId={Math.random()} />
+      <TextInput name="KeyWords of PN or Description" inputId={Math.random()} />
+      <!-- <TextInput name="Link Descriptions" inputId={Math.random()} /> -->
       <div class="flex gap-4 flex-wrap">
         <Button intent="primary" id="close-dialog3" type="button">Close</Button>
         <Button intent="accent" type="submit">Search</Button>
@@ -21,27 +21,6 @@ import TextInput from "./TextInput.astro";
     </form>
   </div>
 
-  <!-- <main >
-    <aside class="form" >
-      <div>
-        <label for="search">Search the Blog</label>
-        <span>Enter a search term or phrase to search the blog.</span>
-      </div>
-      <input 
-        type="search"
-        required
-        min="2"
-        max="24"
-        name="search"
-        id="search"
-        placeholder="Enter a search term…"
-      />
-    </div>
-    <p id="searchReadout"></p>
-    <section aria-label="Search Results">
-      <ul id="searchResults"></ul>
-    </section>
-  </main> -->
 </dialog>
 
 <script>
@@ -63,24 +42,6 @@ import TextInput from "./TextInput.astro";
     }
   });
 
-
-
-  // import DOMPurify from "dompurify";
-  // const form = document.querySelector("form");
-  // form?.addEventListener("submit", (e) => {
-  //   e.preventDefault();
-  //   const formData = new FormData(form);
-  //   const searchTerm = DOMPurify.sanitize(formData.get("search")?.toString());
-  //   if (!searchTerm || searchTerm.length === 0) return;
-  //   const url = new URL("/search", window.location.origin);
-  //   url.searchParams.set("q", searchTerm);
-  //   window.location.assign(url.toString());
-  // });
-
-
-
-
-
   // form inputs 
   //sanitize-html 是一个 JavaScript 模块，用于在用户提供的 HTML 中移除或转义潜在的不安全内容，
   //以防止跨站脚本攻击（XSS）和其他安全漏洞。它的主要功能是对 HTML 进行清理和过滤，确保其中的内容
@@ -99,28 +60,7 @@ import TextInput from "./TextInput.astro";
       if (
         typeof partnumber === "string" 
       ) {
-      //   const req = await fetch("/api/searchdata.json", {
-      //     method: "SEARCH",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify({
-      //       partnumber,
-                
-      //     }),
-      //   });
-      //  // 处理请求的响应
-      //   const { success, data, message } = await req.json();
-        
-      //  // 如果请求成功，则重置表单并关闭对话框，刷新页面
-      //   if (success) {
-      //     searchform.reset();
-      //     dialog3.close();
-      //     location.reload();
-      //     console.log(data)    
-      //   } else {
-      //     throw new Error(message);
-      //   }
+      
        const url = new URL("/search", window.location.origin);
        url.searchParams.set("q", partnumber);
        window.location.assign(url.toString());
