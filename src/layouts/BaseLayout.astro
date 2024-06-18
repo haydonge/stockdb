@@ -128,29 +128,5 @@ const { title = "库存管理", description = "库存管理系统" } = Astro.pro
       class="absolute left-0 h-60 bottom-0 right-0 opacity-30 mix-blend-difference -z-10"
     >
     </div>
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-          // Dropdown Menu
-          document.querySelectorAll('.dropdown').forEach(function(dropDownWrapper) {
-              const button = dropDownWrapper.querySelector('button');
-              const menu = dropDownWrapper.querySelector('.dropdown-menu');
-
-              button.addEventListener('click', function() {
-                  menu.classList.toggle('hidden');
-              });
-
-              // Hide dropdown menu when clicking outside
-              // document.addEventListener('click', function(event) {
-              //     if (!dropDownWrapper.contains(event.target)) {
-              //         menu.classList.add('hidden');
-              //     }
-              // });
-          });
-      });
-  </script>
-
-
-
-
   </body>
 </html>
