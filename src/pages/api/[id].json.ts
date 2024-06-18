@@ -20,9 +20,17 @@ export const DELETE: APIRoute = async ({ params }) => {
   try {
     const res = await db.delete(Stockonhand).where(eq(Stockonhand.id, id));
     if (res) {
-      return new Response(null, { status: 204 });
+      return new Response(
+        JSON.stringify({
+          message: "Delete successful",
+          success: true,
+        }),
+         { 
+          status: 200 
+        }
+      );
     } else {
-      throw new Error("prob, bob");
+      throw new Error("ID is not right ,Delete is cancel");
     }
   } catch (e) {
     console.error(e);
@@ -42,7 +50,7 @@ export const DELETE: APIRoute = async ({ params }) => {
 
 export const PATCH: APIRoute = async ({ params, request }) => {
   const { id } = params;
-  const { partnumber, description, qty, url, safeqty } = await request.json();
+  const { partnumber, description, qty, url, safeqty ,types} = await request.json();
 
   if (!id || !partnumber || !description || qty === undefined || !url || safeqty === undefined) {
     return new Response(
@@ -65,6 +73,7 @@ export const PATCH: APIRoute = async ({ params, request }) => {
         qty: Number(qty),
         url,
         safeqty: Number(safeqty),
+        types,
       })
       .where(eq(Stockonhand.id, Number(id)));
 

@@ -14,6 +14,7 @@ type Stockt = {
   qty: number;
   url: string;
   safeqty: number;
+  types:string;
 };
 
 interface Props {
@@ -65,6 +66,7 @@ const filteredStocks =  defaultStocks;
             <th class="px-6 py-3">Qty</th>
             <th class="px-6 py-3">SafeQty</th>
             <th class="px-6 py-3">URL</th>
+            <th class="px-6 py-3">TYPES</th>
             <th class="px-6 py-3">Action</th>  
           </tr>
         </thead>
@@ -101,6 +103,7 @@ const filteredStocks =  defaultStocks;
   qty: number;
   url: string;
   safeqty: number;
+  types:string;
 };
 
   // let SEARCH_DATA;
@@ -125,7 +128,7 @@ const filteredStocks =  defaultStocks;
 
        function generateSearchList(result:Stockt[]):string {
         return result.map((r:Stockt) => {
-            const { id, partnumber, description, qty, url, safeqty  } = r;
+            const { id, partnumber, description, qty, url, safeqty,types } = r;
 
            return `
             <tr  class="text-center">
@@ -135,6 +138,7 @@ const filteredStocks =  defaultStocks;
                 <td class="py-2">${qty}</td>
                 <td class="py-2">${safeqty}</td>
                 <td class="py-2"> <a href=${url} class="text-blue-500 hover:underline mr-4"> Link </a> </td>
+                <td class="py-2">${types}</td>
                 <td>  <button
                   data-update
                   data-id=${id}
@@ -143,6 +147,7 @@ const filteredStocks =  defaultStocks;
                   data-qty=${qty}
                   data-url=${url}
                   data-safeqty=${safeqty}
+                  data-types=${types}
                   classes="absolute -right-1 -bottom-1 border-4 border-theme-base hover:scale-105 active:scale-95 ring-offset-2"
                   aria-label={"Update Link: ${partnumber}"}
                   class="text-red-500 hover:text-red-700"             
@@ -164,7 +169,8 @@ function attachUpdateEventListeners() {
             description: btn.getAttribute("data-description"),
             qty: btn.getAttribute("data-qty"),
             url: btn.getAttribute("data-url"),
-            safeqty: btn.getAttribute("data-safeqty")
+            safeqty: btn.getAttribute("data-safeqty"),
+            types:btn.getAttribute("data-types"),
           };
           const dialog2 = document.getElementById("dialog2") as HTMLDialogElement;
           if (dialog2) {
@@ -175,6 +181,7 @@ function attachUpdateEventListeners() {
             formupdate.querySelector("[name='qty']").value = stocks.qty;
             formupdate.querySelector("[name='url']").value = stocks.url;
             formupdate.querySelector("[name='safeqty']").value = stocks.safeqty;
+            formupdate.querySelector("[name='types']").value = stocks.types;
             dialog2.showModal();
           }
         });

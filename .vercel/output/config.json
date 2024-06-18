@@ -1,0 +1,64 @@
+{
+	"version": 3,
+	"routes": [
+		{
+			"src": "^/_astro/(.*)$",
+			"headers": {
+				"cache-control": "public, max-age=31536000, immutable"
+			},
+			"continue": true
+		},
+		{
+			"handle": "filesystem"
+		},
+		{
+			"src": "^\\/_image$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/404\\/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/api\\/addLink\\.json\\/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/api\\/addstock\\.json\\/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/api\\/process-data\\.json\\/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/api\\/searchdata\\.json\\/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/api\\/([^/]+?)\\.json\\/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/index2\\/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/search\\/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/tw\\/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/$",
+			"dest": "_render"
+		},
+		{
+			"src": "/.*",
+			"dest": "_render",
+			"status": 404
+		}
+	]
+}

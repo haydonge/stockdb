@@ -27,6 +27,7 @@ const  Stockonhand = defineTable({
     qty:column.number(),
     url: column.text(),
     safeqty: column.number(),
+    types:column.text(),
   },
 });
 

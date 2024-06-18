@@ -1,0 +1,58 @@
+---
+
+import { Stockonhand } from "astro:db";
+import { db ,eq,like} from "astro:db";
+import { FileWatcherEventKind, idText } from "typescript";
+type Stockt = {
+  id: number;
+  partnumber: string;
+  description: string;
+  qty: number;
+  url: string;
+  safeqty: number;
+  types:string;
+};
+
+// interface Props {
+//   stock: Stockt | null;
+// }
+const StocksTypes = await db.select({filed2:Stockonhand.types}).from(Stockonhand);
+// console.log(StocksTypes);
+const filed2array = StocksTypes.map(item => item.filed2);
+const uniqueFiled2Array = [...new Set(filed2array)];
+
+---
+
+
+
+<div class="w-48 bg-gray-800 text-white">
+                     
+    <nav class="py-4">
+        <div class="dropdown">
+            <button class="px-4 py-2 w-full text-left hover:bg-gray-700 focus:outline-none focus:bg-gray-700">
+                库存类别
+                <svg class="h-4 w-4 inline-block ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 9l-7 7-7-7" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <!-- hidden -->
+            <div class="dropdown-menu bg-gray-900">
+                <ul>
+                  {uniqueFiled2Array.map(item => (
+                    <li class="px-4 py-2 hover:bg-gray-700 text-center">
+                      <a href={`/search/?q=${item}`} class="text-white ">{item}</a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+        </div>
+    </nav>
+    <div class="p-4 bg-gray-900">
+        <h2 class="text-sl font-bold">边栏内容</h2>
+        <ul>
+            <li class="px-4 py-2 hover:bg-gray-700"><a href="/tw">About</a></li>
+            <li class="px-4 py-2 hover:bg-gray-700">菜单项2</li>
+            <li class="px-4 py-2 hover:bg-gray-700">菜单项3</li>
+            <li class="px-4 py-2 hover:bg-gray-700">菜单项4</li>
+            <li class="px-4 py-2 hover:bg-gray-700">菜单项5</li>
+        </ul>
+    </div>
+</div>

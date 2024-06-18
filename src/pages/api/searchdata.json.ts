@@ -9,9 +9,9 @@ export const SEARCH: APIRoute = async ({ request }) => {
 
 
   try {
-    const partnumber  = resc; //解析data数据
+    const searchkeyword  = resc; //解析data数据
 
-    if (!partnumber ){
+    if (!searchkeyword ){
       return new Response(
         JSON.stringify({
           message: "Please provide all required fields search.",
@@ -30,8 +30,9 @@ export const SEARCH: APIRoute = async ({ request }) => {
     // console.log(query);
     query = await db.select().from(Stockonhand).where(
             or(
-              like(Stockonhand.partnumber, `%${partnumber}%`),
-              like(Stockonhand.description, `%${partnumber}%`)
+              like(Stockonhand.partnumber, `%${searchkeyword}%`),
+              like(Stockonhand.description, `%${searchkeyword}%`),
+              like(Stockonhand.types, `%${searchkeyword}%`)
             )
           );
     if (query) {

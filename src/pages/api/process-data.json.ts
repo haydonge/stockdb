@@ -6,7 +6,7 @@ export const POST: APIRoute = async ({ request }) => {
     console.log("good")
     try {
        
-            const { partnumber, description, qty, url, safeqty } = item;
+            const { partnumber, description, qty, url, safeqty, types} = item;
             const quantity = parseInt(qty, 10);
             const safeQuantity = parseInt(safeqty, 10);
 
@@ -33,6 +33,7 @@ export const POST: APIRoute = async ({ request }) => {
                     qty: quantity,
                     url,
                     safeqty: safeQuantity,
+                    types,
                 });
             }
        

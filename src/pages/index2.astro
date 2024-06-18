@@ -3,8 +3,6 @@ import LinkCard from "../components/LinkCard.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { Link } from "astro:db"
 import { db } from "astro:db";
-import Datas from "./index.astro";
-import NavBar from "@/components/ui/NavBar.astro";
 const links = await db.select().from(Link);
 ---
 
@@ -16,4 +14,6 @@ const links = await db.select().from(Link);
     {links.map((link) => <LinkCard link={link} />)}
     
   </div>
+
+  
 </BaseLayout>

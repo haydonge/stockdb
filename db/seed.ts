@@ -65,20 +65,25 @@ await db.insert(Stockonhand).values([
     qty:20,
     url: "https://chrispennington.blog",
     safeqty:5,
+    types:"connector",
   },
+
   {
     partnumber: "LFNK1000002",
     description: "This is my blog about web development and design.",  
     qty:20,
     url: "https://sina.com.cn",
     safeqty:5,
+    types:"connector",
   },
+  
   {
     partnumber: "LFNK1000003",
     description: "This is my blog about web development and design.",  
     qty:20,
     url: "https://chrispennington.blog",
     safeqty:5,
+    types:"connector",
   },
   {
     partnumber: "LFNK1000004",
@@ -86,6 +91,7 @@ await db.insert(Stockonhand).values([
     qty:20,
     url: "https://sina.com.cn",
     safeqty:5,
+    types:"cable",
   },
   {
     partnumber: "LFNK1000005",
@@ -93,6 +99,7 @@ await db.insert(Stockonhand).values([
     qty:20,
     url: "https://chrispennington.blog",
     safeqty:5,
+    types:"Line",
   },
   {
     partnumber: "LFNK1000006",
@@ -100,6 +107,7 @@ await db.insert(Stockonhand).values([
     qty:20,
     url: "https://sina.com.cn",
     safeqty:5,
+    types:"connector",
   },
 ]);
 

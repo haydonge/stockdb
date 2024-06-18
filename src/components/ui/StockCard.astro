@@ -13,10 +13,12 @@ type Props = {
     qty: number;
     url: string;
     safeqty: number;
+    types:string;
   };
 };
 
 const { stock } = Astro.props;
+
 ---
 
 <article
@@ -27,7 +29,12 @@ const { stock } = Astro.props;
       {stock.partnumber}
     </h2>
     <p>{stock.description}</p>
-    <p>Onhand Qty : {stock.qty} Safe Qty : {stock.safeqty}</p>
+    <p>Qty : {stock.qty} </p>
+    <p>SafeQty : {stock.safeqty}</p>
+
+  </div>
+  <div class="flex flex-wrap gap-2">
+     <span class="px-2 py-1 bg-green-500 text-white rounded text-x hover:opacity-90"><a href={`/search/?q=${stock.types}`}={stock.types}>{stock.types}</a></span>
   </div>
   <Stock href={stock.url} intent="primary">Open Link</Stock>
   <!-- <Button
@@ -50,7 +57,8 @@ const { stock } = Astro.props;
     data-qty={stock.qty}
     data-url={stock.url}
     data-safeqty={stock.safeqty}
-    classes="absolute -right-1 -bottom-1 border-4 border-theme-base hover:scale-105 active:scale-95 ring-offset-2"
+    data-types={stock.types}
+    classes="absolute -right-1 -bottom-1 border-4 border-theme-base hover:scale-105 active:scale-95 ring-offset-2 m-6"
     aria-label={`Update Link: ${stock.partnumber}`}
   >
     <Icon name="check" size={24} />
@@ -93,6 +101,7 @@ const { stock } = Astro.props;
           qty: btn.getAttribute("data-qty"),
           url: btn.getAttribute("data-url"),
           safeqty: btn.getAttribute("data-safeqty"),
+          types:btn.getAttribute("data-types"),
         };
 
         if (dialog2) {
@@ -104,6 +113,7 @@ const { stock } = Astro.props;
           form.querySelector("[name='qty']").value = stock.qty;
           form.querySelector("[name='url']").value = stock.url;
           form.querySelector("[name='safeqty']").value = stock.safeqty;
+          form.querySelector("[name='types']").value = stock.types;
 
           // 显示对话框
           dialog2.showModal();
