@@ -1,4 +1,4 @@
-import { d as db, L as Link } from './404_BlsOl86u.mjs';
+import { d as db, L as Link } from './404_D31A75j6.mjs';
 import sanitize from 'sanitize-html';
 
 const POST = async ({ request }) => {

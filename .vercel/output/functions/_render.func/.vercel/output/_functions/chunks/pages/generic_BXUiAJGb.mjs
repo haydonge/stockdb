@@ -1,4 +1,4 @@
-import { g as getConfiguredImageService, i as imageConfig } from './404_BlsOl86u.mjs';
+import { g as getConfiguredImageService, i as imageConfig } from './404_D31A75j6.mjs';
 import { c as isRemotePath, d as isRemoteAllowed } from '../astro/assets-service_Du1d1T4u.mjs';
 import * as mime from 'mrmime';
 

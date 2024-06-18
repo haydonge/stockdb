@@ -1,4 +1,4 @@
-import { d as db, S as Stockonhand } from './404_BlsOl86u.mjs';
+import { d as db, S as Stockonhand } from './404_D31A75j6.mjs';
 import { eq } from '@astrojs/db/dist/runtime/virtual.js';
 
 const DELETE = async ({ params }) => {

@@ -3,8 +3,8 @@ import { e as createComponent, r as renderTemplate, m as maybeRenderHead, g as a
 import 'kleur/colors';
 import { cva } from 'class-variance-authority';
 import 'clsx';
-import { $ as $$Icon } from './index_CPIjzQla.mjs';
-import { $ as $$Button, d as db, L as Link, a as $$BaseLayout } from './404_BlsOl86u.mjs';
+import { $ as $$Icon } from './index_DUz1OdgN.mjs';
+import { $ as $$Button, d as db, L as Link, a as $$BaseLayout } from './404_D31A75j6.mjs';
 
 const $$Astro$2 = createAstro();
 const $$Link = createComponent(($$result, $$props, $$slots) => {
